@@ -20,7 +20,6 @@
         </nav>
     {% endblock %}
 
-    {% block content %}
       <div class="container-fluid">
           <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -37,8 +36,11 @@
               </div>
             </nav>
 
-            <div class="col-md-10 ml-sm-auto col-lg-10 px-4">
+
+              <div class="col-md-10 ml-sm-auto col-lg-10 px-4">
                 <main role="main">
+                  {% block content %}
+
                   {% if not products %}
                       <article class="product pt-3">
                       <h1>No results</h1>
@@ -47,10 +49,10 @@
                     <div class="card-columns pt-4">
                     {% for product in products %}
                             <div class="card">
-                                <img class="card-img-top" src="{{ url_for('static', filename='286x180.png') }}">
+                                <img class="card-img-top" src="{{ url_for('static', filename='images/286x180.png') }}">
                                 <div class="card-body">
                                     <h2 class="card-title font-weight-bold">
-                                        <a href="{{ url_for('product', id=product['code']) }}"> {{ product['name'] }}</a>
+                                        <a href="{{ url_for('product', code=product['code']) }}"> {{ product['name'] }}</a>
                                     </h2>
                                   <p class="card-text">{{ product['description'] }}</p>
                                   <p class="card-text text-muted">{{ product['username'] }}</p>
@@ -59,11 +61,12 @@
                     {% endfor %}
                     </div>
                   {% endif %}
+
+                {% endblock %}
                 </main>
             </div>
 
           </div>
       </div>
-    {% endblock %}
 
 {% endblock %}

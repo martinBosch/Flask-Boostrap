@@ -24,6 +24,14 @@ mongo = PyMongo(app)
 #product = {"code": 6, "name": "prod6", "username": "user6", "description": "prod6 test"}
 #mongo.db.products.insert_one(product)
 
+#purchase = {"code": 1, "month": "enero", "amount": "10"}
+#mongo.db.purchases.insert_one(purchase)
+#purchase = {"code": 1, "month": "febrero", "amount": "5"}
+#mongo.db.purchases.insert_one(purchase)
+#purchase = {"code": 1, "month": "marzo", "amount": "2"}
+#mongo.db.purchases.insert_one(purchase)
+
+
 
 @app.route("/", methods=('GET', 'POST'))
 def index():
@@ -39,6 +47,15 @@ def search():
     return render_template('index.html', products=products)
 
 
-@app.route("/product/<int:id>")
-def product(id):
-    return render_template('product.html')
+@app.route("/product/<int:code>")
+def product(code):
+    product = mongo.db.products.find_one({'code': code})
+    purchases = list(mongo.db.purchases.find({'code': code}))
+    print(purchases)
+    month = []
+    amount = []
+    for purchase in purchases:
+        month.append( purchase['month'] )
+        amount.append( purchase['amount'] )
+
+    return render_template('product.html', product=product, months=month, amount_purchases=amount)
